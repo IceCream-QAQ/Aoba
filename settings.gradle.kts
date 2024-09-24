@@ -10,4 +10,5 @@ fun isp(name: String, dir: String? = null) {
 }
 
 isp("tencent")
+isp("cloudflare")
 //isp("volcengine")
