@@ -5,6 +5,8 @@ fun includeProject(name: String, dir: String? = null) {
     dir?.let { project(name).projectDir = file(it) }
 }
 
+include("core")
+
 fun isp(name: String, dir: String? = null) {
     includeProject(":isp-$name", dir ?: "isp/$name")
 }
