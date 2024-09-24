@@ -2,6 +2,7 @@ package aoba.isp.tencent
 
 import aoba.`fun`.*
 import aoba.isp.tencent.dnspod.DnsPod
+import aoba.isp.tencent.sms.Sms
 import aoba.type.AobaRequestException
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -15,6 +16,7 @@ class TencentCloud(private val secretId: String, secretKey: String) {
     private val secretKey = "TC3$secretKey".toByteArray()
 
     val dnspod by lazy { DnsPod(this) }
+    val sms by lazy { Sms(this) }
 
     companion object {
         val defaultProdHostMap: MutableMap<String, String> = hashMapOf()

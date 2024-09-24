@@ -12,14 +12,15 @@ value class JsonBuilder(
     val map: HashMap<String, JsonElement> = HashMap()
 ) : MutableMap<String, JsonElement> by map {
     inline infix fun <reified V> String.to(v: V?) = v?.let {
-        when (it) {
-            is String -> map[this] = JsonPrimitive(it)
-            is Number -> map[this] = JsonPrimitive(it)
-            is Boolean -> map[this] = JsonPrimitive(it)
-//            is Array<*> -> map[this] = buildJsonArray { array ->  }
-            is List<*> -> map[this] = buildJsonArray { it.forEach { i -> add(json.encodeToJsonElement(i)) } }
-            else -> map[this] = json.encodeToJsonElement(it)
-        }
+        map[this] = any2JsonElement(v)
+    }
+
+    fun any2JsonElement(any: Any): JsonElement = when (any) {
+        is String -> JsonPrimitive(any)
+        is Number -> JsonPrimitive(any)
+        is Boolean -> JsonPrimitive(any)
+        is List<*> -> buildJsonArray { any.forEach { i -> i?.let { add(any2JsonElement(i)) } } }
+        else -> json.encodeToJsonElement(any)
     }
 
     fun build(): JsonObject = JsonObject(map)
