@@ -1,21 +1,100 @@
 plugins {
     kotlin("jvm") version "2.0.20"
+    kotlin("plugin.serialization") version "2.0.20"
+    java
+    `java-library`
+    `maven-publish`
 }
 
-group = "com.IceCreamQAQ"
+group = "com.IceCreamQAQ.Aoba"
 version = "0.0.1"
 
-repositories {
-    mavenCentral()
+allprojects {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven("https://maven.icecreamqaq.com/repository/maven-public/")
+    }
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
+    api(kotlin("stdlib"))
+    api(kotlin("reflect"))
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
+    api("com.squareup.okhttp3:okhttp:4.12.0")
+    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
-kotlin {
-    jvmToolchain(8)
+subprojects {
+    apply {
+        plugin("java")
+        plugin("java-library")
+        plugin("maven-publish")
+        plugin("org.jetbrains.kotlin.jvm")
+        plugin("org.jetbrains.kotlin.plugin.serialization")
+    }
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlin {
+        jvmToolchain(8)
+    }
+
+    dependencies {
+        api(rootProject)
+    }
+
+    java {
+        withSourcesJar()
+    }
+
+    configure<PublishingExtension> {
+        publications {
+            create<MavenPublication>(name) {
+                groupId = "com.IceCreamQAQ.Aoba"
+                artifactId = name
+                version = "1.0.0-DEV1"
+
+                pom {
+                    name.set("Aoba")
+                    description.set("Aoba")
+                    url.set("https://github.com/IceCream-QAQ/Aoba")
+                    licenses {
+                        license {
+                            name.set("The Apache License, Version 2.0")
+                            url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                        }
+                    }
+                    developers {
+                        developer {
+                            id.set("IceCream")
+                            name.set("IceCream")
+                            email.set("www@withdata.net")
+                        }
+                    }
+                    scm {
+                        connection.set("https://github.com/IceCream-QAQ/Aoba")
+                    }
+                }
+                from(components["java"])
+            }
+
+            repositories {
+                mavenLocal()
+                maven {
+                    val snapshotsRepoUrl = "https://maven.icecreamqaq.com/repository/maven-snapshots/"
+                    val releasesRepoUrl = "https://maven.icecreamqaq.com/repository/maven-releases/"
+                    url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
+
+                    credentials {
+                        System.getenv("MAVEN_USER")?.let { username = it }
+                        System.getenv("MAVEN_TOKEN")?.let { password = it }
+                    }
+                }
+            }
+        }
+    }
 }
