@@ -58,7 +58,7 @@ subprojects {
             create<MavenPublication>(name) {
                 groupId = "com.IceCreamQAQ.Aoba"
                 artifactId = name
-                version = "1.0.0-DEV1"
+                version = rootProject.version.toString()
 
                 pom {
                     name.set("Aoba")
