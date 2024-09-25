@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "2.0.20"
     kotlin("plugin.serialization") version "2.0.20"
+    id("org.jetbrains.dokka") version "1.9.20"
     java
     `java-library`
     `maven-publish`
@@ -24,6 +25,7 @@ subprojects {
         plugin("maven-publish")
         plugin("org.jetbrains.kotlin.jvm")
         plugin("org.jetbrains.kotlin.plugin.serialization")
+        plugin("org.jetbrains.dokka")
     }
 
     java {
@@ -42,6 +44,13 @@ subprojects {
 
     java {
         withSourcesJar()
+        withJavadocJar()
+    }
+
+    tasks.replace("javadocJar", Jar::class).apply {
+        dependsOn(tasks.dokkaJavadoc)
+        from(tasks.dokkaJavadoc.flatMap { it.outputDirectory })
+        archiveClassifier.set("javadoc")
     }
 
     configure<PublishingExtension> {
