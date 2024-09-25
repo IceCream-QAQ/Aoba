@@ -12,8 +12,9 @@ Aoba 将会提供对应的 Async 与 Blocking API，以方便 Java 开发者使�
 
 ## 对于 Spring 用户
 
-Aoba 通过 `kotlinx-serialization-json` 进行 JSON 解析。  
-Spring 会判断是否存在 `kotlinx-serialization-json`，如果存在则会 优先 使用 `kotlinx-serialization-json` 进行 JSON 解析。  
+Aoba 通过 `kotlinx-serialization-json` 进行 JSON 序列化与反序列化。  
+Spring 会判断是否存在 `kotlinx-serialization-json`。  
+如果存在则会 优先 对 `kotlinx-serialization-json` 支持的类 使用 `kotlinx-serialization-json` 进行 JSON 序列化与反序列化。  
 对于存在 后处理器 修改返回值的情况，请手动配置 Spring MVC 序列化器，否则可能产生叠加效果导致异常。  
 
 ## 对于 Java 9+ 用户
