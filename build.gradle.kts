@@ -5,6 +5,7 @@ plugins {
     java
     `java-library`
     `maven-publish`
+    signing
 }
 
 group = "com.IceCreamQAQ.Aoba"
@@ -23,6 +24,7 @@ subprojects {
         plugin("java")
         plugin("java-library")
         plugin("maven-publish")
+        plugin("signing")
         plugin("org.jetbrains.kotlin.jvm")
         plugin("org.jetbrains.kotlin.plugin.serialization")
         plugin("org.jetbrains.dokka")
@@ -62,7 +64,7 @@ subprojects {
 
                 pom {
                     name.set("Aoba")
-                    description.set("Aoba")
+                    description.set("Aoba 是一个基于 Kotlin/JVM 与 Kotlin 协程 编写的纯异步的各大云服务商的 API 调用库。")
                     url.set("https://github.com/IceCream-QAQ/Aoba")
                     licenses {
                         license {
@@ -79,6 +81,8 @@ subprojects {
                     }
                     scm {
                         connection.set("https://github.com/IceCream-QAQ/Aoba")
+                        developerConnection.set("https://github.com/IceCream-QAQ/Aoba")
+                        url.set("https://github.com/IceCream-QAQ/Aoba")
                     }
                 }
                 from(components["java"])
@@ -87,9 +91,9 @@ subprojects {
             repositories {
                 mavenLocal()
                 maven {
-                    val snapshotsRepoUrl = "https://maven.icecreamqaq.com/repository/maven-snapshots/"
-                    val releasesRepoUrl = "https://maven.icecreamqaq.com/repository/maven-releases/"
-                    url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
+//                    val snapshotsRepoUrl = "https://maven.icecreamqaq.com/repository/maven-snapshots/"
+                    val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                    url = uri(releasesRepoUrl)
 
                     credentials {
                         System.getenv("MAVEN_USER")?.let { username = it }
@@ -99,4 +103,14 @@ subprojects {
             }
         }
     }
+    signing {
+        sign(publishing.publications[name])
+
+        useInMemoryPgpKeys(
+            project.findProperty("signingKey") as String? ?: System.getenv("SIGNING_KEY"),
+            project.findProperty("signingPassword") as String? ?: System.getenv("SIGNING_PASSWORD")
+        )
+    }
+
 }
+
