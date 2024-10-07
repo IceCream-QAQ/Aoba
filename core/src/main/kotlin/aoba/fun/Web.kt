@@ -8,7 +8,8 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import java.io.IOException
 
-class Web(
+@JvmInline
+value class Web(
     private val client: OkHttpClient = OkHttpClient()
 ) {
 
