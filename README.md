@@ -1,4 +1,5 @@
 # Aoba
+[![Maven Central Version](https://img.shields.io/maven-central/v/com.IceCreamQAQ.Aoba/core)](https://central.sonatype.com/namespace/com.IceCreamQAQ.Aoba)
 
 Aoba 是一个基于 Kotlin/JVM 的对于主流云服务厂商 API 的封装库。  
 Aoba 基于 Kotlin/JVM 与 Kotlin 协程，使用 Okhttp 进行纯异步网络请求。  

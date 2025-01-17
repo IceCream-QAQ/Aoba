@@ -11,7 +11,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.concurrent.getOrSet
 
-class TencentCloud(private val secretId: String, secretKey: String) {
+class TencentCloud(
+    private val secretId: String,
+    secretKey: String,
+    private val web: Web = Web()
+) {
 
     private val secretKey = "TC3$secretKey".toByteArray()
 
@@ -19,17 +23,16 @@ class TencentCloud(private val secretId: String, secretKey: String) {
     val sms by lazy { Sms(this) }
 
     companion object {
-        val defaultProdHostMap: MutableMap<String, String> = hashMapOf()
+        private val defaultProdHostMap: MutableMap<String, String> = hashMapOf()
 
         private val sdfThreadLocal = ThreadLocal<SimpleDateFormat>()
-        val sdf
+        private val sdf
             get() =
                 sdfThreadLocal.getOrSet {
                     SimpleDateFormat("yyyy-MM-dd").apply { timeZone = TimeZone.getTimeZone("UTC") }
                 }
     }
 
-    private val web = Web()
 
     val prodHostMap = hashMapOf<String, String>().apply { putAll(defaultProdHostMap) }
 
@@ -107,9 +110,9 @@ class TencentCloud(private val secretId: String, secretKey: String) {
             throw TencentBusinessException(
                 resp,
                 TencentRequestErrorInfo(
-                    it["Code"]?.toString() ?: "未提供",
-                    it["Code"]?.toString() ?: "未提供",
                     respBody["RequestId"]?.toString() ?: "未提供",
+                    it["Code"]?.toString() ?: "未提供",
+                    it["Message"]?.toString() ?: "未提供",
                 )
             )
         }

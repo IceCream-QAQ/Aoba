@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "com.IceCreamQAQ.Aoba"
-version = "0.0.2"
+version = "0.0.3"
 
 allprojects {
     repositories {
@@ -104,12 +104,14 @@ subprojects {
         }
     }
     signing {
-        sign(publishing.publications[name])
+        val key = project.findProperty("signingKey") as String? ?: System.getenv("SIGNING_KEY")
+        val password = project.findProperty("signingPassword") as String? ?: System.getenv("SIGNING_PASSWORD")
 
-        useInMemoryPgpKeys(
-            project.findProperty("signingKey") as String? ?: System.getenv("SIGNING_KEY"),
-            project.findProperty("signingPassword") as String? ?: System.getenv("SIGNING_PASSWORD")
-        )
+        if (key != null && password != null) {
+            sign(publishing.publications[name])
+
+            useInMemoryPgpKeys(key, password)
+        }
     }
 
 }
