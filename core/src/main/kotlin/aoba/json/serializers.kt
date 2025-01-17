@@ -7,6 +7,7 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import java.util.*
 
 object EnableDisableBooleanSerializer : KSerializer<Boolean> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("EnableDisableBoolean", PrimitiveKind.STRING)
@@ -17,7 +18,7 @@ object EnableDisableBooleanSerializer : KSerializer<Boolean> {
     }
 
     override fun deserialize(decoder: Decoder): Boolean {
-        return when (val stringValue = decoder.decodeString()) {
+        return when (val stringValue = decoder.decodeString().uppercase(Locale.getDefault())) {
             "ENABLE" -> true
             "DISABLE" -> false
             else -> throw SerializationException("Unexpected value: $stringValue")
@@ -34,7 +35,7 @@ object YesNoBooleanSerializer : KSerializer<Boolean> {
     }
 
     override fun deserialize(decoder: Decoder): Boolean {
-        return when (val stringValue = decoder.decodeString()) {
+        return when (val stringValue = decoder.decodeString().uppercase(Locale.getDefault())) {
             "YES" -> true
             "NO" -> false
             else -> throw SerializationException("Unexpected value: $stringValue")

@@ -4,7 +4,7 @@ import okhttp3.Response
 
 class AobaRequestException(
     val response: Response
-) : Exception("请求出错，Url: ${response.request.url}，状态码: ${response.code}。")
+) : Exception("请求出错，Url: ${response.request.url}，状态码: ${response.code}。${response.body!!.string()}")
 
 open class AobaBusinessException(
     val response: Response,

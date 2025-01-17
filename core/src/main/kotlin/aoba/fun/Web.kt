@@ -18,6 +18,7 @@ value class Web(
         value class HeaderBuilder(private val builder: Request.Builder) {
             infix fun String.to(that: String) = builder.addHeader(this, that)
         }
+
         private val rb: Request.Builder = Request.Builder()
 
         init {
@@ -37,7 +38,6 @@ value class Web(
     }
 
 
-
     suspend fun execute(request: Request): Response {
         val wait = CompletableDeferred<Response>()
         client.newCall(request).enqueue(object : okhttp3.Callback {
@@ -49,7 +49,7 @@ value class Web(
                 wait.complete(response)
             }
         })
-        return wait.await()
+        return kotlin.runCatching { wait.await() }.getOrElse { throw IllegalStateException("Web 请求错误", it) }
     }
 
     suspend fun get(url: String, body: RequestBuilder.() -> Unit) = execute(RequestBuilder(url).apply(body).build())

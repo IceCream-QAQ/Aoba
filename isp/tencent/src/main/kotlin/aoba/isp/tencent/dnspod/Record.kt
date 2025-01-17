@@ -1,5 +1,6 @@
 package aoba.isp.tencent.dnspod
 
+import aoba.dns.RecordType
 import aoba.`fun`.buildJson
 import aoba.isp.tencent.TencentCloud
 import kotlinx.serialization.SerialName
@@ -7,24 +8,10 @@ import kotlinx.serialization.Serializable
 
 class Record(private val qCloud: TencentCloud) {
 
-    enum class RecordType(val value: String) {
-        A("A"),
-        CNAME("CNAME"),
-        MX("MX"),
-        TXT("TXT"),
-        AAAA("AAAA"),
-        NS("NS"),
-        CAA("CAA"),
-        SRV("SRV"),
-        HTTPS("HTTPS"),
-        SVCB("SVCB"),
-        SPF("SPF")
-    }
-
     @Serializable
     data class AddRecordResp(
         @SerialName("RequestId")
-        val recordId: Int,
+        val recordId: String,
         @SerialName("RecordId")
         val requestId: String
     )
@@ -34,7 +21,8 @@ class Record(private val qCloud: TencentCloud) {
         subDomain: String,
         recordType: RecordType,
         value: String,
-        ttl: Int = 600,
+        recordLine: String = "默认",
+        ttl: Int? = null,
         weight: Int? = null,
         mx: Int? = null,
         remark: String? = null,
@@ -49,8 +37,8 @@ class Record(private val qCloud: TencentCloud) {
             "RecordType" to recordType.value
             "Value" to value
             "TTL" to ttl
-            "RecordLine" to "默认"
-            "WEIGHT" to weight
+            "RecordLine" to recordLine
+            "Weight" to weight
             "MX" to mx
             "Remark" to remark
         }

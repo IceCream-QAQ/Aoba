@@ -18,23 +18,23 @@ class Cert(private val ct: CtCDN) {
 
     /*** 创建证书
      * @param name 证书名称
+     * @param pem 证书公钥
      * @param key 证书私钥
-     * @param cert 证书公钥
      * @param email 通知邮箱
      *
      * @see <a href="https://vip.ctcdn.cn/help/10005260/10014505/common/10014506">创建证书</a>
      */
     suspend fun create(
         name: String,
+        pem: String,
         key: String,
-        cert: String,
         email: String? = null,
     ) = ct.post<CreateResp>(
         "/v1/cert/create"
     ) {
         "name" to name
         "key" to key
-        "cert" to cert
+        "certs" to pem
         "email" to email
     }
 

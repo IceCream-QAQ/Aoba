@@ -4,6 +4,7 @@ import aoba.`fun`.buildJson
 import aoba.isp.tencent.TencentCloud
 import aoba.isp.tencent.dnspod.model.DomainCountInfo
 import aoba.isp.tencent.dnspod.model.DomainInfo
+import aoba.isp.tencent.dnspod.model.DomainListItem
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -26,13 +27,33 @@ class Domain(private val qCloud: TencentCloud) {
     )
 
     @Serializable
+    data class InfoResponse(
+        @SerialName("RequestId")
+        val requestId: String,
+        @SerialName("DomainInfo")
+        val info: DomainInfo? = null
+    )
+
+    suspend fun info(
+        domain: String
+    ) = qCloud.post<InfoResponse>(
+        "dnspod",
+        "DescribeDomain",
+        "ap-guangzhou",
+        "2021-03-23",
+        buildJson {
+            "Domain" to domain
+        }
+    )
+
+    @Serializable
     data class ListResponse(
         @SerialName("RequestId")
         val requestId: String,
         @SerialName("DomainCountInfo")
         val count: DomainCountInfo,
         @SerialName("DomainList")
-        val list: List<DomainInfo>
+        val list: List<DomainListItem>
     )
 
     suspend fun list(

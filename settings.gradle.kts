@@ -14,4 +14,11 @@ fun isp(name: String, dir: String? = null) {
 isp("tencent")
 isp("cloudflare")
 isp("ctyun")
+isp("aliyun")
 //isp("volcengine")
+
+fun module(name: String, dir: String? = null) {
+    includeProject(":module-$name", dir ?: "module/$name")
+}
+
+module("dns")
