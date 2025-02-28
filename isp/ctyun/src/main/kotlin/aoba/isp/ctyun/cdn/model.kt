@@ -147,5 +147,6 @@ data class CdnOrigin(
     // 权重
     val weight: Int,
     // 源站角色
-    val role: String
+    val role: String,
+//    val protocol: String?
 )

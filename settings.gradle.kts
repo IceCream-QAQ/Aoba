@@ -15,7 +15,7 @@ isp("tencent")
 isp("cloudflare")
 isp("ctyun")
 isp("aliyun")
-//isp("volcengine")
+isp("volcengine")
 
 fun module(name: String, dir: String? = null) {
     includeProject(":module-$name", dir ?: "module/$name")
