@@ -40,9 +40,9 @@ class Statistic(private val ct: CtCDN) {
             val hitRequestRate: Double,
             val qps: Double,
             @SerialName("hit_flow")
-            val hitFlow: Int,
+            val hitFlow: Long,
             @SerialName("flow")
-            val flow: Int,
+            val flow: Long,
             @SerialName("hit_flow_rate")
             val hitFlowRate: Double,
             @SerialName("bandwidth")
