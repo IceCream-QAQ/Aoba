@@ -8,7 +8,7 @@ plugins {
     signing
 }
 
-group = "com.IceCreamQAQ.Aoba"
+group = "com.IceCreamAPI.Aoba"
 version = "0.0.5"
 
 allprojects {
@@ -58,7 +58,7 @@ subprojects {
     configure<PublishingExtension> {
         publications {
             create<MavenPublication>(name) {
-                groupId = "com.IceCreamQAQ.Aoba"
+                groupId = rootProject.group.toString()
                 artifactId = name
                 version = rootProject.version.toString()
 
