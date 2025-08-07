@@ -92,7 +92,7 @@ subprojects {
                 mavenLocal()
                 maven {
 //                    val snapshotsRepoUrl = "https://maven.icecreamqaq.com/repository/maven-snapshots/"
-                    val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                    val releasesRepoUrl = "https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/"
                     url = uri(releasesRepoUrl)
 
                     credentials {
