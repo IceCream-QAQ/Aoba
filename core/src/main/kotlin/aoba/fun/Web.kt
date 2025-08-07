@@ -66,7 +66,7 @@ value class Web(
 
     suspend fun get(url: String, body: RequestBuilder.() -> Unit) = execute(RequestBuilder(url).apply(body).build())
 
-    suspend inline fun post(url: String = "", body: RequestBuilder.() -> Unit) =
-        execute(RequestBuilder(url).apply(body).build())
+    suspend inline fun post(url: String? = null, body: RequestBuilder.() -> Unit) =
+        execute((url?.let { RequestBuilder(url) } ?: RequestBuilder()).apply(body).build())
 }
 
